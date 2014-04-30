@@ -52,6 +52,49 @@ class CollectionTests extends \PHPUnit_Framework_TestCase
 		$this->assertFalse($foo->has('foo'));
 	}
 
+	public function testCanGetFirstItem()
+	{
+		$foo = new Foo();
+		$foo->set('one', 'One');
+		$foo->set('two', 'Two');
+		$foo->set('three', 'Three');
+
+		$this->assertEquals('One', $foo->first());
+	}
+
+	public function testCanGetLastItem()
+	{
+		$foo = new Foo();
+		$foo->set('one', 'One');
+		$foo->set('two', 'Two');
+		$foo->set('three', 'Three');
+
+		$this->assertEquals('Three', $foo->last());
+	}
+
+	public function testCanAddString()
+	{
+		$foo = new Foo();
+		$foo->add('Foo');
+		$this->assertEquals('Foo', $foo->first());
+	}
+
+	public function testCanAddArray()
+	{
+		$foo = new Foo();
+		$foo->add(['foo'=>'Foo']);
+		$data = $foo->first();
+		$this->assertEquals('Foo', $data['foo']);
+	}
+
+	public function testCanAddObject()
+	{
+		$foo = new Foo();
+		$foo->add((object) ['foo'=>'Foo']);
+		$data = $foo->first();
+		$this->assertEquals('Foo', $data->foo);
+	}
+
 	public function testCanClearCollection()
 	{
 		$foo = new Foo($this->data);
@@ -99,10 +142,16 @@ class CollectionTests extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('z', $foo->get('x', 'z'), 'Default Value Override.');
 	}
 
-	public function testToArrayReturnsArray()
+	public function testAllReturnsArray()
 	{
 		$foo = new Foo($this->data);
 		$this->assertEquals($this->data, $foo->all());
+	}
+
+	public function testToArrayReturnsArray()
+	{
+		$foo = new Foo($this->data);
+		$this->assertEquals($this->data, $foo->toArray());
 	}
 
 	public function testToJsonReturnsValidJson()

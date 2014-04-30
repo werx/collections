@@ -80,6 +80,23 @@ class Collection
 	}
 
 	/**
+	 * Get the last item in the collection.
+	 *
+	 * @return mixed
+	 */
+	public function last()
+	{
+		// Get the last item
+		$last = end($this->items);
+
+		// Reset the internal pointer.
+		reset($this->items);
+
+		// Return the last item.
+		return $last;
+	}
+
+	/**
 	 * Remove the specified key from the collection.
 	 *
 	 * @param string $key
@@ -89,6 +106,18 @@ class Collection
 		if ($this->has($key)) {
 			unset($this->items[$key]);
 		}
+	}
+
+	/**
+	 * Add an item onto the end of the array.
+	 *
+	 * New item will be numerically indexed.
+	 *
+	 * @param type $data
+	 */
+	public function add($data = null)
+	{
+		$this->items[] = $data;
 	}
 
 	/**
