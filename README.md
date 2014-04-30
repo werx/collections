@@ -2,6 +2,9 @@
 
 Base class for working with collections of things.
 
+[![Build Status](https://travis-ci.org/werx/collections.png?branch=master)](https://travis-ci.org/werx/collections) [![Total Downloads](https://poser.pugx.org/werx/collections/downloads.png)](https://packagist.org/packages/werx/collections) [![Latest Stable Version](https://poser.pugx.org/werx/collections/v/stable.png)](https://packagist.org/packages/werx/collections)
+
+
 ```php
 class Foo extends \werx\Collections\Collection
 {
