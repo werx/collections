@@ -4,6 +4,14 @@ Base class for working with collections of things.
 
 [![Build Status](https://travis-ci.org/werx/collections.png?branch=master)](https://travis-ci.org/werx/collections) [![Total Downloads](https://poser.pugx.org/werx/collections/downloads.png)](https://packagist.org/packages/werx/collections) [![Latest Stable Version](https://poser.pugx.org/werx/collections/v/stable.png)](https://packagist.org/packages/werx/collections)
 
+## Usage
+You can either create instances of the Collection object...
+
+```php
+$foo = new \werx\Collections\Collection;
+```
+
+Or create a class that extends it.
 
 ```php
 class Foo extends \werx\Collections\Collection
@@ -11,76 +19,109 @@ class Foo extends \werx\Collections\Collection
 
 }
 
-// Fill the collection in the constructor.
-$foo = new Foo(['foo' => 'Foo', 'bar' => 'bar']);
+$foo = new Foo();
+```
 
-// Fill the collection with the `fill()` method.
+### Fill the collection in the constructor.
+```php
+$foo = new new \werx\Collections\Collection(['foo' => 'Foo', 'bar' => 'bar']);
+```
+
+### Fill the collection with the `fill()` method.
+```php
 $foo = new Foo();
 $foo->fill(['foo' => 'Foo', 'bar' => 'bar']);
+```
 
-// How many items in the collection?
+### How many items in the collection?
+```php
 var_dump($foo->count());
 // 2
+```
 
-// Does the collection have a key named 'foo'? (yes)
+### Does the collection have a key named 'foo'? (yes)
+```php
 var_dump($foo->has('foo'));
 // true
+```
 
-// Does the collection have a key named 'foo'? (no)
+### Does the collection have a key named 'foo'? (no)
+``` php
 var_dump($foo->has('x'));
 // false
+```
 
-// Get the value of the key named 'foo' from the collection.
+### Get the value of the key named 'foo' from the collection.
+``` php
 var_dump($foo->get('foo'));
 // Foo
+```
 
-// Return default null if key doesn't exist.
+### Return default null if key doesn't exist.
+``` php
 var_dump($foo->get('x'));
 // null
-
-// Set a different default value if key doesn't exist.
+```
+### Set a different default value if key doesn't exist.
+``` php
 var_dump($foo->get('x', 'no'));
 // no
+```
 
-// Set a key/value.
+### Set a key/value.
+``` php
 $foo->set('name', 'Josh');
+```
 
-// Remove a key from the collection.
+### Add an item to the collection without a specific key.
+``` php
+$foo->add('Josh');
+```
+
+### Add an array to the collection without a specific key.
+``` php
+$foo->add(['name' => 'Josh', 'location' => 'Arkansas']);
+```
+
+### Remove a key from the collection.
+``` php
 $foo->remove('name');
+```
 
-// Get all keys in the collection
+### Get all keys in the collection.
+``` php
 $foo->all();
-// or 
+```
+
+### OR
+``` php
 $foo->toArray();
+```
 
-// Convert the collection to json.
+### Convert the collection to json.
+``` php
 var_dump($foo->toJson());
-//{"foo":"Foo","bar":"Bar"}
+// {"foo":"Foo","bar":"Bar"}
+```
 
-// Casting the collection to a string will also return json.
+### Casting the collection to a string will also return json.
+``` php
 var_dump((string) $foo);
-//{"foo":"Foo","bar":"Bar"}
+// {"foo":"Foo","bar":"Bar"}
+```
 
-// Empty the collection.
+### Empty the collection.
+``` php
 $foo->clear();
-
-
 ```
 
 ## Installation
 Installation of this package is easy with Composer. If you aren't familiar with the Composer Dependency Manager for PHP, [you should read this first](https://getcomposer.org/doc/00-intro.md).
 
-If you don't already have [Composer](https://getcomposer.org) installed (either globally or in your project), you can install it like this:
-
-	$ curl -sS https://getcomposer.org/installer | php
-
-Create a file named composer.json somewhere in your project with the following content:
-
+### composer.json
 ``` json
-{
-	"require": {
-		"werx/collections": "dev-master"
-	}
+"require": {
+	"werx/collections": "dev-master"
 }
 ```
 
