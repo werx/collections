@@ -45,7 +45,7 @@ var_dump($foo->has('foo'));
 // true
 ```
 
-### Does the collection have a key named 'foo'? (no)
+### Does the collection have a key named 'x'? (no)
 ``` php
 var_dump($foo->has('x'));
 // false
