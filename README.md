@@ -27,15 +27,17 @@ $foo = new Foo();
 $foo = new new \werx\Collections\Collection(['foo' => 'Foo', 'bar' => 'bar']);
 ```
 
-### Fill the collection with the `fill()` method.
+### Add multiple items to collection by passing an array to the `set()` method.
 ```php
 $foo = new Foo();
-$foo->fill(['foo' => 'Foo', 'bar' => 'bar']);
+$foo->set(['foo' => 'Foo', 'bar' => 'bar']);
 ```
 
 ### How many items in the collection?
 ```php
 var_dump($foo->count());
+# OR
+var_dump(count($foo)); // The Collection class implements the Countable() interface.
 // 2
 ```
 

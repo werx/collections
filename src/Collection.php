@@ -2,26 +2,17 @@
 
 namespace werx\Collections;
 
-class Collection
+use Countable;
+use IteratorAggregate;
+use ArrayIterator;
+
+class Collection implements Countable, IteratorAggregate
 {
 	protected $items = [];
 
 	public function __construct($data = [])
 	{
-		$this->fill($data);
-	}
-
-	/**
-	 * Fill the collection with the specified data.
-	 * Any existing items with the same key will be replaced.
-	 *
-	 * @param type $data
-	 */
-	public function fill($data)
-	{
-		foreach ($data as $key => $value) {
-			$this->items[$key] = $value;
-		}
+		$this->set($data);
 	}
 
 	/**
@@ -45,16 +36,28 @@ class Collection
 		return count($this->items);
 	}
 
+	public function getIterator()
+	{
+		return new ArrayIterator($this->items);
+	}
+
 	/**
 	 * Set a key with the specified value.
-	 * Any existing item with the same key will be replaced.
+	 * Any existing item with the same key will be replaced. Set multiple items at once
+	 * by passing $key as an array.
 	 *
 	 * @param string $key
 	 * @param mixed $value
 	 */
 	public function set($key, $value = null)
 	{
-		$this->items[$key] = $value;
+		if (is_array($key)) {
+			foreach ($key as $k => $v) {
+				$this->items[$k] = $v;
+			}
+		} else {
+			$this->items[$key] = $value;
+		}
 	}
 
 	/**
@@ -169,7 +172,7 @@ class Collection
 	}
 
 	/**
-	 * Magic Method - alias for get().
+	 * Get items using object property syntax
 	 *
 	 * @param string $key
 	 * @return get
@@ -177,5 +180,16 @@ class Collection
 	public function __get($key)
 	{
 		return $this->get($key);
+	}
+
+	/**
+	 * Set items using object property syntax
+	 *
+	 * @param $key
+	 * @param null $value
+	 */
+	public function __set($key, $value = null)
+	{
+		$this->set($key, $value);
 	}
 }

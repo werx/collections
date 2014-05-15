@@ -2,7 +2,7 @@
 
 namespace werx\CollectionTests;
 
-use werx\Collection;
+use werx\Collections\Collection;
 
 use werx\CollectionTests\Resources\Collections\Foo;
 
@@ -15,156 +15,191 @@ class CollectionTests extends \PHPUnit_Framework_TestCase
 
 	public function testCanExtendCollection()
 	{
-		$foo = new Foo();
+		$collection = new Foo();
 
-		$this->assertTrue(is_subclass_of($foo, 'werx\Collections\Collection'));
+		$this->assertTrue(is_subclass_of($collection, 'werx\Collections\Collection'));
 	}
 
 	public function testCanFillCollectionConstructor()
 	{
-		$foo = new Foo($this->data);
-		$this->assertEquals(2, $foo->count());
-		$this->assertEquals('Foo', $foo->first());
+		$collection = new Collection($this->data);
+		$this->assertEquals(2, $collection->count());
+		$this->assertEquals('Foo', $collection->first());
 	}
 
-	public function testCanFillCollectionMethod()
+	public function testCanSetArray()
 	{
-		$foo = new Foo();
-		$foo->fill($this->data);
-		$this->assertEquals(2, $foo->count());
-		$this->assertEquals('Foo', $foo->first());
+		$collection = new Collection();
+		$collection->set($this->data);
+		$this->assertEquals(2, $collection->count());
+		$this->assertEquals('Foo', $collection->first());
 	}
 
 	public function testCanSetItem()
 	{
-		$foo = new Foo();
-		$foo->set('foo', 'Foo');
-		$this->assertEquals('Foo', $foo->get('foo'));
+		$collection = new Collection();
+		$collection->set('foo', 'Foo');
+		$this->assertEquals('Foo', $collection->get('foo'));
+	}
+
+	public function testCanSetItemObjectSyntax()
+	{
+		$collection = new Collection();
+		$collection->foo = 'Foo';
+
+		$this->assertEquals('Foo', $collection->get('foo'));
 	}
 
 	public function testCanRemoveItem()
 	{
-		$foo = new Foo();
-		$foo->set('foo', 'Foo');
-		$this->assertTrue($foo->has('foo'));
+		$collection = new Collection();
+		$collection->set('foo', 'Foo');
+		$this->assertTrue($collection->has('foo'));
 
-		$foo->remove('foo');
-		$this->assertFalse($foo->has('foo'));
+		$collection->remove('foo');
+		$this->assertFalse($collection->has('foo'));
 	}
 
 	public function testCanGetFirstItem()
 	{
-		$foo = new Foo();
-		$foo->set('one', 'One');
-		$foo->set('two', 'Two');
-		$foo->set('three', 'Three');
+		$collection = new Collection();
+		$collection->set('one', 'One');
+		$collection->set('two', 'Two');
+		$collection->set('three', 'Three');
 
-		$this->assertEquals('One', $foo->first());
+		$this->assertEquals('One', $collection->first());
 	}
 
 	public function testCanGetLastItem()
 	{
-		$foo = new Foo();
-		$foo->set('one', 'One');
-		$foo->set('two', 'Two');
-		$foo->set('three', 'Three');
+		$collection = new Collection();
+		$collection->set('one', 'One');
+		$collection->set('two', 'Two');
+		$collection->set('three', 'Three');
 
-		$this->assertEquals('Three', $foo->last());
+		$this->assertEquals('Three', $collection->last());
 	}
 
 	public function testCanAddString()
 	{
-		$foo = new Foo();
-		$foo->add('Foo');
-		$this->assertEquals('Foo', $foo->first());
+		$collection = new Collection();
+		$collection->add('Foo');
+		$this->assertEquals('Foo', $collection->first());
 	}
 
 	public function testCanAddArray()
 	{
-		$foo = new Foo();
-		$foo->add(['foo'=>'Foo']);
-		$data = $foo->first();
+		$collection = new Collection();
+		$collection->add(['foo'=>'Foo']);
+		$data = $collection->first();
 		$this->assertEquals('Foo', $data['foo']);
 	}
 
 	public function testCanAddObject()
 	{
-		$foo = new Foo();
-		$foo->add((object) ['foo'=>'Foo']);
-		$data = $foo->first();
+		$collection = new Collection();
+		$collection->add((object) ['foo'=>'Foo']);
+		$data = $collection->first();
 		$this->assertEquals('Foo', $data->foo);
 	}
 
 	public function testCanClearCollection()
 	{
-		$foo = new Foo($this->data);
-		$this->assertEquals(2, $foo->count());
+		$collection = new Collection($this->data);
+		$this->assertEquals(2, $collection->count());
 
-		$foo->clear();
-		$this->assertEquals(0, $foo->count());
+		$collection->clear();
+		$this->assertEquals(0, $collection->count());
 	}
 
 	public function testCanCountItems()
 	{
-		$foo = new Foo($this->data);
-		$this->assertEquals(2, $foo->count());
+		$collection = new Collection($this->data);
+		$this->assertEquals(2, $collection->count());
 	}
 
 	public function testCanCountItemsInitialEmptyCollection()
 	{
-		$foo = new Foo();
-		$this->assertEquals(0, $foo->count);
+		$collection = new Collection();
+		$this->assertEquals(0, $collection->count);
+	}
+
+	public function testImplementsCountableInterface()
+	{
+		$collection = new Collection($this->data);
+		$this->assertEquals(2, count($collection));
 	}
 
 	public function testCollectionShouldHaveKey()
 	{
-		$foo = new Foo($this->data);
-		$this->assertTrue($foo->has('foo'));
+		$collection = new Collection($this->data);
+		$this->assertTrue($collection->has('foo'));
 	}
 
 	public function testCollectionShouldNotHaveKey()
 	{
-		$foo = new Foo($this->data);
-		$this->assertFalse($foo->has('x'));
+		$collection = new Collection($this->data);
+		$this->assertFalse($collection->has('x'));
 	}
 
-	public function testCanGetValue()
+	public function testCanGetItem()
 	{
-		$foo = new Foo($this->data);
-		$this->assertEquals('Foo', $foo->get('foo'));
-		$this->assertEquals('Bar', $foo->get('bar'));
+		$collection = new Collection($this->data);
+		$this->assertEquals('Foo', $collection->get('foo'));
+		$this->assertEquals('Bar', $collection->get('bar'));
+	}
+
+	public function testCanGetItemObjectSyntax()
+	{
+		$collection = new Collection($this->data);
+		$this->assertEquals('Foo', $collection->foo);
+		$this->assertEquals('Bar', $collection->bar);
 	}
 
 	public function testCanGetDefaultValue()
 	{
-		$foo = new Foo($this->data);
-		$this->assertEquals(null, $foo->get('x'), 'Default Value.');
-		$this->assertEquals('z', $foo->get('x', 'z'), 'Default Value Override.');
+		$collection = new Collection($this->data);
+		$this->assertEquals(null, $collection->get('x'), 'Default Value.');
+		$this->assertEquals('z', $collection->get('x', 'z'), 'Default Value Override.');
+	}
+
+	public function testCanGetDefaultItemObjectSyntax()
+	{
+		$collection = new Collection($this->data);
+		$this->assertEquals(null, $collection->x);
 	}
 
 	public function testAllReturnsArray()
 	{
-		$foo = new Foo($this->data);
-		$this->assertEquals($this->data, $foo->all());
+		$collection = new Collection($this->data);
+		$this->assertEquals($this->data, $collection->all());
 	}
 
 	public function testToArrayReturnsArray()
 	{
-		$foo = new Foo($this->data);
-		$this->assertEquals($this->data, $foo->toArray());
+		$collection = new Collection($this->data);
+		$this->assertEquals($this->data, $collection->toArray());
 	}
 
 	public function testToJsonReturnsValidJson()
 	{
-		$foo = new Foo($this->data);
-		$json = $foo->toJson();
+		$collection = new Collection($this->data);
+		$json = $collection->toJson();
 		$this->assertEquals($this->data, json_decode($json, true));
 	}
 
 	public function testToStringReturnsExpectedString()
 	{
-		$foo = new Foo($this->data);
-		$this->assertEquals('{"foo":"Foo","bar":"Bar"}', (string) $foo);
+		$collection = new Collection($this->data);
+		$this->assertEquals('{"foo":"Foo","bar":"Bar"}', (string) $collection);
+	}
+
+	public function testCanGetIterator()
+	{
+		$collection = new Collection($this->data);
+		$iterator = $collection->getIterator();
+
+		$this->assertInstanceOf('ArrayIterator', $iterator);
 	}
 
 	public function getTestData()
